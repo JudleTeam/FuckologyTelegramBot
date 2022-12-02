@@ -9,11 +9,11 @@ about_blogger.add(
 
 about_fuckology = InlineKeyboardMarkup(row_width=1)
 about_fuckology.add(
-    InlineKeyboardButton('Описание проекта', callback_data='file'),
+    InlineKeyboardButton('Описание #нахуйлогии', callback_data='file'),
     InlineKeyboardButton('Тариф «встрепенуться»', callback_data=callbacks.rate.new(index=0)),
     InlineKeyboardButton('Тариф «начать действовать»', callback_data=callbacks.rate.new(index=1)),
     InlineKeyboardButton('Тариф «хуярить с Машей»', callback_data=callbacks.rate.new(index=2)),
-    InlineKeyboardButton('Написать нам', url='t.me/polinagorbenko')
+    InlineKeyboardButton('Написать нам по делу', url='t.me/polinagorbenko')
 )
 
 
