@@ -30,7 +30,7 @@ def get_rate_keyboard(rate_price):
         )
 
     keyboard.add(
-        InlineKeyboardButton('Договор оферты', url='telegra.ph'),
+        InlineKeyboardButton('Договор оферты', url='https://telegra.ph/Dogovor-oferta-okazaniya-obrazovatelnyh-uslug-12-03'),
         InlineKeyboardButton('Политика о персональных данных', url='telegra.ph'),
         InlineKeyboardButton('Назад', callback_data='to_main')
     )
