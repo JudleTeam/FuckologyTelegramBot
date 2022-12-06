@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from aiogram import Dispatcher
 from aiogram.types import CallbackQuery, InputFile
@@ -24,7 +25,8 @@ async def show_sell_closed(call: CallbackQuery):
 
 async def show_rate(call: CallbackQuery, callback_data: dict):
     config = call.bot.get('config')
-    rate: Rate = config.bot.rates[int(callback_data['index'])]
+    index = int(callback_data['index'])
+    rate: Rate = config.bot.rates[index]
 
     for period in rate.periods:
         if period.start <= datetime.datetime.now() <= period.end:
@@ -35,9 +37,12 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
         price = 0
         price_str = 'Продажи закрыты'
 
+    with open('tgbot/static/messages.json', 'r') as file:
+        data = json.load(file)
+
     await call.message.edit_text(
         messages.rate.format(
-            description=rate.description,
+            description=data[str(index + 3)],
             price=price_str
         ),
         reply_markup=inline_keyboards.get_rate_keyboard(price)
@@ -45,8 +50,13 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
     await call.answer()
 
 
+async def show_admin(call: CallbackQuery):
+    await call.message.edit_text('Админ меню', reply_markup=inline_keyboards.admin_main) 
+
+
 def register_main(dp: Dispatcher):
     dp.register_callback_query_handler(send_file, text='file')
     dp.register_callback_query_handler(show_main_menu, text='to_main')
     dp.register_callback_query_handler(show_sell_closed, text='sell_closed')
     dp.register_callback_query_handler(show_rate, callbacks.rate.filter())
+    dp.register_callback_query_handler(show_admin, text='to_admin')

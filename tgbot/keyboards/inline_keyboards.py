@@ -16,6 +16,22 @@ about_fuckology.add(
     InlineKeyboardButton('Написать нам по делу', url='t.me/polinagorbenko')
 )
 
+admin_main = InlineKeyboardMarkup(row_width=1)
+admin_main.add(
+    InlineKeyboardButton('Поменять текст сообщения', callback_data='change_message'),
+    InlineKeyboardButton('Закрыть', callback_data='close')
+)
+
+admin_change_message = InlineKeyboardMarkup(row_width=1)
+admin_change_message.add(
+    InlineKeyboardButton('Про #нахуйлогию', callback_data=callbacks.change_message.new('show', 1)),
+    InlineKeyboardButton('Про Машу Милерюс', callback_data=callbacks.change_message.new('show', 2)),
+    InlineKeyboardButton('Тариф «встрепенуться»', callback_data=callbacks.change_message.new('show', 3)),
+    InlineKeyboardButton('Тариф «начать действовать»', callback_data=callbacks.change_message.new('show', 4)),
+    InlineKeyboardButton('Тариф «хуярить с Машей»', callback_data=callbacks.change_message.new('show', 5)),
+    InlineKeyboardButton('Назад', callback_data='to_admin')
+)
+
 
 def get_rate_keyboard(rate_price):
     keyboard = InlineKeyboardMarkup(row_width=1)
@@ -36,3 +52,25 @@ def get_rate_keyboard(rate_price):
     )
 
     return keyboard
+
+
+def get_change_message_keyboard(id):
+    keyboard = InlineKeyboardMarkup(row_width=1)
+
+    keyboard.add(
+        InlineKeyboardButton('Изменить сообщение', callback_data=callbacks.change_message.new('change', str(id))),
+        InlineKeyboardButton('Назад', callback_data='change_message')
+    )
+
+    return keyboard
+
+
+def get_cancel_button(id):
+    keyboard = InlineKeyboardMarkup()
+
+    keyboard.add(
+        InlineKeyboardButton('Отмена', callback_data=callbacks.change_message.new('change_cancel', id))
+    )
+
+    return keyboard
+
