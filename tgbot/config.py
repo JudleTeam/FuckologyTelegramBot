@@ -68,25 +68,25 @@ def load_config(path: str = None):
         Rate(
             title='Встрепенуться',
             periods=[
-                Period(start=datetime.datetime(2022, 12, 5), end=datetime.datetime(2022, 12, 7, 23, 59), price=5_000),
-                Period(start=datetime.datetime(2022, 12, 9), end=datetime.datetime(2022, 12, 10, 23, 59), price=7_000),
-                Period(start=datetime.datetime(2022, 12, 12), end=datetime.datetime(2022, 12, 12, 23, 59), price=10_000)
+                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59), price=5_000),
+                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 23, 59), price=7_000),
+                Period(start=datetime.datetime(2022, 12, 13), end=datetime.datetime(2022, 12, 13, 23, 59), price=10_000)
             ]
         ),
         Rate(
             title='Начать действовать',
             periods=[
-                Period(start=datetime.datetime(2022, 12, 5), end=datetime.datetime(2022, 12, 7), price=20_000),
-                Period(start=datetime.datetime(2022, 12, 9), end=datetime.datetime(2022, 12, 10), price=25_000),
+                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59), price=20_000),
+                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 23, 59), price=25_000),
                 Period(start=datetime.datetime(2022, 12, 12), end=datetime.datetime(2022, 12, 12), price=30_000)
             ]
         ),
         Rate(
             title='Хуярить с Машей',
             periods=[
-                Period(start=datetime.datetime(2022, 12, 5), end=datetime.datetime(2022, 12, 7), price=70_000),
-                Period(start=datetime.datetime(2022, 12, 9), end=datetime.datetime(2022, 12, 10), price=80_000),
-                Period(start=datetime.datetime(2022, 12, 12), end=datetime.datetime(2022, 12, 12), price=100_000)
+                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59), price=70_000),
+                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 23, 59), price=80_000),
+                Period(start=datetime.datetime(2022, 12, 13), end=datetime.datetime(2022, 12, 13, 23, 59), price=100_000)
             ]
         )
     ]

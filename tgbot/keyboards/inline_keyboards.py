@@ -35,7 +35,7 @@ admin_change_message.add(
 
 after_payment = InlineKeyboardMarkup()
 after_payment.add(
-    InlineKeyboardButton('Перейти в чат', url='t.me/polinagorbenko')
+    InlineKeyboardButton('Перейти в чат', url='https://t.me/+H9DaC1Ap_cwwZGZi')
 )
 
 get_phone = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -58,7 +58,7 @@ def get_rate_keyboard(rate_price, index):
 
     keyboard.add(
         InlineKeyboardButton('Договор оферты', url='https://telegra.ph/Dogovor-oferta-okazaniya-obrazovatelnyh-uslug-12-03'),
-        InlineKeyboardButton('Политика о персональных данных', url='telegra.ph'),
+        InlineKeyboardButton('Политика о персональных данных', url='https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-07-4'),
         InlineKeyboardButton('Назад', callback_data='to_main')
     )
 
