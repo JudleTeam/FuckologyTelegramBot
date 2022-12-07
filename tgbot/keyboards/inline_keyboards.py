@@ -32,8 +32,13 @@ admin_change_message.add(
     InlineKeyboardButton('Назад', callback_data='to_admin')
 )
 
+after_payment = InlineKeyboardMarkup()
+after_payment.add(
+    InlineKeyboardButton('Перейти в чат', url='t.me/polinagorbenko')
+)
 
-def get_rate_keyboard(rate_price):
+
+def get_rate_keyboard(rate_price, index):
     keyboard = InlineKeyboardMarkup(row_width=1)
 
     if rate_price == 0:
@@ -42,7 +47,7 @@ def get_rate_keyboard(rate_price):
         )
     else:
         keyboard.add(
-            InlineKeyboardButton('Оплатить', callback_data=callbacks.rate_pay.new(price=rate_price))
+            InlineKeyboardButton('Оплатить', callback_data=callbacks.rate_pay.new(price=rate_price, index=index))
         )
 
     keyboard.add(

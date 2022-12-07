@@ -47,7 +47,8 @@ data = {
     '2': about_blogger,
     '3': rate1,
     '4': rate2,
-    '5': rate3
+    '5': rate3,
+    'invoice_id': 1
 }
 
 with open('messages.json', 'w') as file:

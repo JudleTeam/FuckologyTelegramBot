@@ -45,7 +45,7 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
             description=data[str(index + 3)],
             price=price_str
         ),
-        reply_markup=inline_keyboards.get_rate_keyboard(price)
+        reply_markup=inline_keyboards.get_rate_keyboard(price, index)
     )
     await call.answer()
 
