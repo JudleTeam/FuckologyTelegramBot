@@ -32,7 +32,7 @@ async def show_pay_menu(call: CallbackQuery, callback_data: dict):
         "Receipt": {
             "items": [
                 {
-                    "name": 'авторский вебинар Марии Милерюс "Нахуйлогия"',
+                    "name": title,
                     "quantity": 1,
                     "sum": price,
                     "tax": "none",
