@@ -33,6 +33,11 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
             price = period.price
             price_str = f'{price} руб.'
             break
+        else:
+            if datetime.datetime.now() < period.start:
+                price = 0
+                price_str = f'Следующее окно продаж откроется {period.start.day} декабря в {period.start.hour}.{"00" if str(period.start.minute) == "0" else period.start.minute}'
+                break
     else:
         price = 0
         price_str = 'Продажи закрыты'

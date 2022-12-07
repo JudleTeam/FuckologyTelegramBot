@@ -83,7 +83,7 @@ async def process_successful_payment(message: Message, state: FSMContext):
     user = message.from_user
     await states.AfterPaymentState.waiting_for_phone.set()
     await state.update_data(index=index, username=user.username, full_name=user.full_name, mention=user.mention)
-    await message.answer('Пожалуйста оставьте ваш номер телефона', reply_markup=inline_keyboards.get_phone)
+    await message.answer('Пожалуйста, оставьте ваш номер телефона', reply_markup=inline_keyboards.get_phone)
 
 
 async def show_final_menu(message: Message, state: FSMContext):
