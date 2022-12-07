@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, LabeledPrice, PreCheckoutQuery, ContentType, Message
 
 from tgbot.misc import callbacks, messages, states
-from tgbot.keyboards import inline_keyboards
+from tgbot.keyboards import inline_keyboards, reply_keyboards
 
 
 async def show_pay_menu(call: CallbackQuery, callback_data: dict):
@@ -30,15 +30,14 @@ async def show_pay_menu(call: CallbackQuery, callback_data: dict):
     data = {
         "InvoiceId": invoice_id,
         "Receipt": {
-            "sno": "osn",
             "items": [
                 {
-                    "name": title,
+                    "name": 'авторский вебинар Марии Милерюс "Нахуйлогия"',
                     "quantity": 1,
                     "sum": price,
-                    "tax": "vat10",
+                    "tax": "none",
                     "payment_method": "full_payment",
-                    "payment_object": "commodity"
+                    "payment_object": "service"
                 }
             ]
         }
@@ -88,7 +87,7 @@ async def process_successful_payment(message: Message, state: FSMContext):
 
 
 async def show_final_menu(message: Message, state: FSMContext):
-    config = call.bot.get('config')
+    config = message.bot.get('config')
 
     phone = message.contact.phone_number
     # get order id
@@ -102,13 +101,17 @@ async def show_final_menu(message: Message, state: FSMContext):
         full_name = data['full_name']
         mention = data['mention']
     await state.finish()
-    title = config.bot.rates[index].title
+    title = config.bot.rates[index-3].title
+    title = f'Тариф {title}'
     # get price
+    rate: Rate = config.bot.rates[index-3]
     for period in rate.periods:
         if period.start <= datetime.datetime.now() <= period.end:
             price = period.price
             break
 
+    await message.answer(messages.first, reply_markup=reply_keyboards.main_menu)
+    await message.answer(messages.after_payment, reply_markup=inline_keyboards.after_payment)
     google_sheets = message.bot.get('google_sheets')
     google_sheets.add_customer(title, mention, invoice_id, datetime.datetime.now(), price, phone, username, full_name)
 
@@ -117,4 +120,4 @@ def register_pay(dp: Dispatcher):
     dp.register_callback_query_handler(show_pay_menu, callbacks.rate_pay.filter())
     dp.register_pre_checkout_query_handler(get_pre_checkout_query, lambda query: True)
     dp.register_message_handler(process_successful_payment, content_types=ContentType.SUCCESSFUL_PAYMENT)
-    dp.register_message_handler(show_final_menu, state=states.AfterPaymentState.waiting_for_phone)
+    dp.register_message_handler(show_final_menu, state=states.AfterPaymentState.waiting_for_phone, content_types=ContentType.CONTACT)

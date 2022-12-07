@@ -23,6 +23,6 @@ class GoogleSheets:
             valueInputOption='USER_ENTERED',
             insertDataOption='INSERT_ROWS',
             body={
-                'values': [[title, mention, order_id, created_at, price, phone, username, full_name]]
+                'values': [[title, mention, order_id, str(created_at), price, phone, username, full_name]]
             }
         ).execute()
