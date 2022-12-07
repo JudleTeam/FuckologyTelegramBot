@@ -28,8 +28,14 @@ class Rate:
 
 @dataclass
 class Robokassa:
-    shop_id: str
     token: str
+
+
+@dataclass
+class GoogleSheets:
+    credentials_file: str
+    spreadsheet_id: str
+
 
 
 @dataclass
@@ -50,6 +56,7 @@ class Config:
     bot: TelegramBot
     database: DatabaseConfig
     robokassa: Robokassa
+    google_sheets: GoogleSheets
     misc: Miscellaneous
 
 
@@ -99,8 +106,11 @@ def load_config(path: str = None):
             port=env.int('DB_PORT')
         ),
         robokassa=Robokassa(
-            shop_id=env.str('SHOP_ID'),
             token=env.str('ROBOKASSA_TOKEN')
+        ),
+        google_sheets=GoogleSheets(
+            spreadsheet_id=env.str('SPREADSHEET_ID'),
+            credentials_file=env.str('CREDENTIALS_FILE')
         ),
         misc=Miscellaneous()
     )

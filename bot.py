@@ -11,6 +11,8 @@ from tgbot import handlers
 from tgbot import filters
 from tgbot import middlewares
 
+from tgbot.services.google_sheets import GoogleSheets
+
 
 logger = logging.getLogger(__name__)
 
@@ -42,9 +44,11 @@ async def main():
     bot = Bot(token=config.bot.token, parse_mode='HTML')
     dp = Dispatcher(bot, storage=storage)
     redis = Redis()
+    google_sheets = GoogleSheets(config.google_sheets.credentials_file, config.google_sheets.spreadsheet_id)
 
     bot['config'] = config
     bot['redis'] = redis
+    bot['google_sheets'] = google_sheets
 
     register_all_middlewares(dp, config)
     register_all_filters(dp)

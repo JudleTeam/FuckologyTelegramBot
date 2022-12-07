@@ -1,4 +1,5 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 from tgbot.misc import callbacks
 
@@ -35,6 +36,11 @@ admin_change_message.add(
 after_payment = InlineKeyboardMarkup()
 after_payment.add(
     InlineKeyboardButton('Перейти в чат', url='t.me/polinagorbenko')
+)
+
+get_phone = ReplyKeyboardMarkup(resize_keyboard=True)
+get_phone.add(
+    KeyboardButton('Отправить номер', request_contact=True)
 )
 
 
