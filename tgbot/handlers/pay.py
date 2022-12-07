@@ -13,7 +13,9 @@ async def show_pay_menu(call: CallbackQuery, callback_data: dict):
     index = int(callback_data['index'])
     title = config.bot.rates[index].title
 
-    product = LabeledPrice(label='Настоящая Машина Времени', amount=5000)
+    title = f'Тариф "{title}"'
+
+    product = LabeledPrice(label=title, amount=price * 100)
 
     # increase invoice id
     with open('tgbot/static/messages.json', 'r') as file:
@@ -24,14 +26,14 @@ async def show_pay_menu(call: CallbackQuery, callback_data: dict):
         json.dump(data, file)
 
     data = {
-      "InvoiceId": 100,
+      "InvoiceId": invoice_id,
       "Receipt": {
         "sno": "osn",
         "items": [
           {
-            "name": "Товар 1",
+            "name": title,
             "quantity": 1,
-            "sum": 50,
+            "sum": price,
             "tax": "vat10",
             "payment_method": "full_payment",
             "payment_object": "commodity"
@@ -42,7 +44,7 @@ async def show_pay_menu(call: CallbackQuery, callback_data: dict):
 
     await call.bot.send_invoice(
         call.message.chat.id,
-        title='Тест',
+        title=title,
         description='Описание',
         provider_token=config.robokassa.token,
         provider_data=data,
