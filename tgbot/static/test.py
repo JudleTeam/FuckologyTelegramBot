@@ -78,7 +78,8 @@ data = {
         }
     ],
     'invoice_id': 1,
-    'reg_users': []
+    'reg_users': [],
+    'open_sells': True
 }
 
 if __name__ == "__main__":

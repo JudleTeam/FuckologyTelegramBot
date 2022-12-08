@@ -3,8 +3,10 @@ from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from tgbot.keyboards import inline_keyboards, reply_keyboards
+from tgbot.handlers.main import show_admin
+from tgbot.keyboards import inline_keyboards
 from tgbot.misc import states, callbacks
+from tgbot.misc.json_helper import get_data
 
 
 async def show_messages_to_change_menu(call: CallbackQuery):
@@ -27,6 +29,17 @@ async def change_message(call: CallbackQuery, callback_data: dict, state: FSMCon
     await state.update_data(id=message_id, menu_message_id=call.message.message_id)
     await call.message.edit_text('Введите новое сообщение', reply_markup=inline_keyboards.get_cancel_button(message_id))
     await call.answer()
+
+
+async def switch_sells(call: CallbackQuery):
+    data = get_data()
+
+    data['open_sells'] = not data['open_sells']
+    with open(r'tgbot/static/messages.json', 'w') as file:
+        json.dump(data, file, indent=4)
+
+    await call.answer('Успешно!', show_alert=True)
+    await show_admin(call)
 
 
 async def get_changed_message(message: Message, state: FSMContext):
@@ -139,3 +152,4 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(get_changed_message, state=states.MessageChangeState.waiting_for_input)
     dp.register_callback_query_handler(cancel_change, callbacks.change_message.filter(type='change_cancel'), state='*')
     dp.register_callback_query_handler(close_button, text='close')
+    dp.register_callback_query_handler(switch_sells, text='switch_sells')

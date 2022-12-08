@@ -20,6 +20,7 @@ admin_main = InlineKeyboardMarkup(row_width=1)
 admin_main.add(
     InlineKeyboardButton('Поменять текст сообщения', callback_data='change_message'),
     InlineKeyboardButton('Изменить цены', callback_data='to_rates_update'),
+    InlineKeyboardButton('Вкл/выкл продажи', callback_data='switch_sells'),
     InlineKeyboardButton('Закрыть', callback_data='close')
 )
 
@@ -107,4 +108,3 @@ def get_cancel_button(id):
     )
 
     return keyboard
-

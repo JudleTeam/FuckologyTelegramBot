@@ -33,7 +33,13 @@ async def send_about_fuckology(message: Message):
 
 async def command_admin(message: Message):
     await message.delete()
-    await message.answer('Админ меню', reply_markup=inline_keyboards.admin_main)
+    data = get_data()
+    if data['open_sells']:
+        sells_status = 'Открыты'
+    else:
+        sells_status = 'Закрыты'
+
+    await message.answer(f'Админ меню\nПродажи: {sells_status}', reply_markup=inline_keyboards.admin_main)
 
 
 async def cancel_state(message: Message, state: FSMContext):
