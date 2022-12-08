@@ -39,12 +39,12 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
         price_str = 'Продажи закрыты'
     else:
         for ind, period in enumerate(rate.periods):
-            if period.start <= datetime.datetime.now() <= period.end:
+            if period.start <= datetime.datetime.now() + datetime.timedelta(hours=3) <= period.end:  # fix timezone
                 price = data['rates'][index]['prices'][ind]
                 price_str = f'{price} руб.'
                 break
             else:
-                if datetime.datetime.now() < period.start:
+                if datetime.datetime.now() + datetime.timedelta(hours=3) < period.start:
                     price = 0
                     price_str = (f'Следующее окно продаж откроется {period.start.day} декабря в '
                                  f'{period.start.hour}.{"00" if str(period.start.minute) == "0" else period.start.minute}')

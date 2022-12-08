@@ -126,7 +126,7 @@ async def show_final_menu(message: Message, state: FSMContext):
     await state.finish()
 
     google_sheets = message.bot.get('google_sheets')
-    google_sheets.add_customer(title, mention, invoice_id, datetime.datetime.now(), price, phone, username, full_name)
+    google_sheets.add_customer(title, mention, invoice_id, datetime.datetime.now() + datetime.timedelta(hours=3), price, phone, username, full_name)
 
 
 def register_pay(dp: Dispatcher):
