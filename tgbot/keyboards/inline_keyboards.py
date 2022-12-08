@@ -38,11 +38,6 @@ after_payment.add(
     InlineKeyboardButton('Перейти в чат', url='https://t.me/+H9DaC1Ap_cwwZGZi')
 )
 
-get_phone = ReplyKeyboardMarkup(resize_keyboard=True)
-get_phone.add(
-    KeyboardButton('Отправить номер', request_contact=True)
-)
-
 
 def get_rate_keyboard(rate_price, index):
     keyboard = InlineKeyboardMarkup(row_width=1)

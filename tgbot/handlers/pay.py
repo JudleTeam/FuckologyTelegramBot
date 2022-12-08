@@ -79,11 +79,10 @@ async def process_successful_payment(message: Message, state: FSMContext):
     elif payload == 'three':
         index = 5
 
-    # await message.answer(messages.after_payment, reply_markup=inline_keyboards.after_payment)
     user = message.from_user
     await states.AfterPaymentState.waiting_for_phone.set()
     await state.update_data(index=index, username=user.username, full_name=user.full_name, mention=user.mention)
-    await message.answer('Пожалуйста, оставьте ваш номер телефона', reply_markup=inline_keyboards.get_phone)
+    await message.answer('Пожалуйста, оставьте ваш номер телефона', reply_markup=inline_keyboards.get_cancel_button())
 
 
 async def show_final_menu(message: Message, state: FSMContext):
@@ -104,7 +103,7 @@ async def show_final_menu(message: Message, state: FSMContext):
     title = config.bot.rates[index-3].title
     title = f'Тариф {title}'
     # get price
-    rate: Rate = config.bot.rates[index-3]
+    rate = config.bot.rates[index-3]
     for period in rate.periods:
         if period.start <= datetime.datetime.now() <= period.end:
             price = period.price
