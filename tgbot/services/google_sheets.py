@@ -26,3 +26,14 @@ class GoogleSheets:
                 'values': [[title, mention, order_id, str(created_at), price, phone, username, full_name]]
             }
         ).execute()
+
+    def register_user(self, mention, username, full_name):
+        self.service.spreadsheets().values().append(
+            spreadsheetId=self.spreadsheet_id,
+            range='all_users!A1:C1',
+            valueInputOption='USER_ENTERED',
+            insertDataOption='INSERT_ROWS',
+            body={
+                'values': [[mention, username, full_name]]
+            }
+        ).execute()

@@ -77,7 +77,8 @@ data = {
             'final_price': 100_000
         }
     ],
-    'invoice_id': 1
+    'invoice_id': 1,
+    'reg_users': []
 }
 
 if __name__ == "__main__":

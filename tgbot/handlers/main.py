@@ -7,6 +7,7 @@ from aiogram.types import CallbackQuery, InputFile
 from tgbot.config import Rate
 from tgbot.keyboards import inline_keyboards
 from tgbot.misc import messages, callbacks
+from tgbot.misc.json_helper import register_user
 
 
 async def send_file(call: CallbackQuery):
@@ -24,6 +25,8 @@ async def show_sell_closed(call: CallbackQuery):
 
 
 async def show_rate(call: CallbackQuery, callback_data: dict):
+    google_sheets = call.bot.get('google_sheets')
+    register_user(google_sheets, call.from_user)
     config = call.bot.get('config')
     index = int(callback_data['index'])
     rate: Rate = config.bot.rates[index]
@@ -56,6 +59,8 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
 
 
 async def show_admin(call: CallbackQuery):
+    google_sheets = call.bot.get('google_sheets')
+    register_user(google_sheets, call.from_user)
     await call.message.edit_text('Админ меню', reply_markup=inline_keyboards.admin_main) 
 
 

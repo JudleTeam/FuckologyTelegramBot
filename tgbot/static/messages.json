@@ -33,5 +33,8 @@
             "final_price": 105000
         }
     ],
-    "invoice_id": 1
+    "invoice_id": 1,
+    "reg_users": [
+        535105735
+    ]
 }

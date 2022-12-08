@@ -6,22 +6,27 @@ from aiogram.types import Message
 
 from tgbot.keyboards import reply_keyboards, inline_keyboards
 from tgbot.misc import messages
+from tgbot.misc.json_helper import register_user, get_data
 
 
 async def command_start(message: Message):
+    google_sheets = message.bot.get('google_sheets')
+    register_user(google_sheets, message.from_user)
     await message.answer(messages.first, reply_markup=reply_keyboards.main_menu)
 
 
 async def send_about_blogger(message: Message):
-    with open(r'tgbot/static/messages.json', 'r') as file:
-        data = json.load(file)
+    google_sheets = message.bot.get('google_sheets')
+    register_user(google_sheets, message.from_user)
+    data = get_data()
 
     await message.answer(data['2'], reply_markup=inline_keyboards.about_blogger)
 
 
 async def send_about_fuckology(message: Message):
-    with open(r'tgbot/static/messages.json', 'r') as file:
-        data = json.load(file)
+    google_sheets = message.bot.get('google_sheets')
+    register_user(google_sheets, message.from_user)
+    data = get_data()
 
     await message.answer(data['1'], reply_markup=inline_keyboards.about_fuckology)
 

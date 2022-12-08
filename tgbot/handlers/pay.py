@@ -8,8 +8,13 @@ from tgbot.config import Rate
 from tgbot.misc import callbacks, messages, states
 from tgbot.keyboards import inline_keyboards, reply_keyboards
 
+from tgbot.misc.json_helper import get_data, register_user
+
 
 async def show_pay_menu(call: CallbackQuery, callback_data: dict):
+    google_sheets = call.bot.get('google_sheets')
+    register_user(google_sheets, call.from_user)
+
     config = call.bot.get('config')
 
     price = int(callback_data['price'])
@@ -21,8 +26,7 @@ async def show_pay_menu(call: CallbackQuery, callback_data: dict):
     product = LabeledPrice(label=title, amount=price * 100)
 
     # increase invoice id
-    with open('tgbot/static/messages.json', 'r') as file:
-        data = json.load(file)
+    data = get_data()
     invoice_id = data['invoice_id']
     data['invoice_id'] = invoice_id + 1
     with open('tgbot/static/messages.json', 'w') as file:
@@ -51,6 +55,7 @@ async def show_pay_menu(call: CallbackQuery, callback_data: dict):
         payload = 'two'
     elif index == 5:
         payload = 'three'
+
     await call.bot.send_invoice(
         call.message.chat.id,
         title=title,
@@ -96,8 +101,7 @@ async def show_final_menu(message: Message, state: FSMContext):
 
     config = message.bot.get('config')
     # get order id
-    with open('tgbot/static/messages.json', 'r') as file:
-        data = json.load(file)
+    data = get_data()
     invoice_id = data['invoice_id']
 
     async with state.proxy() as data:
@@ -105,9 +109,6 @@ async def show_final_menu(message: Message, state: FSMContext):
         username = data['username']
         full_name = data['full_name']
         mention = data['mention']
-
-    with open('tgbot/static/messages.json', 'r') as file:
-        data = json.load(file)
 
     title = config.bot.rates[index-3].title
     title = f'Тариф {title}'
