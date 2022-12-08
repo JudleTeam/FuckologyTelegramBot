@@ -79,6 +79,8 @@ async def process_successful_payment(message: Message, state: FSMContext):
         index = 4
     elif payload == 'three':
         index = 5
+    # test
+    # index = 3
 
     user = message.from_user
     await states.AfterPaymentState.waiting_for_phone.set()
@@ -113,10 +115,10 @@ async def show_final_menu(message: Message, state: FSMContext):
     rate: Rate = config.bot.rates[index-3]
     for ind, period in enumerate(rate.periods):
         if period.start <= datetime.datetime.now() <= period.end:
-            price = data['rates'][index]['prices'][ind]
+            price = data['rates'][index-3]['prices'][ind]
             break
     else:
-        price = data['rates'][index]['final_price']
+        price = data['rates'][index-3]['final_price']
 
     await message.answer(messages.first, reply_markup=reply_keyboards.main_menu)
     await message.answer(messages.after_payment, reply_markup=inline_keyboards.after_payment)
@@ -130,4 +132,5 @@ def register_pay(dp: Dispatcher):
     dp.register_callback_query_handler(show_pay_menu, callbacks.rate_pay.filter())
     dp.register_pre_checkout_query_handler(get_pre_checkout_query, lambda query: True)
     dp.register_message_handler(process_successful_payment, content_types=ContentType.SUCCESSFUL_PAYMENT)
+    # dp.register_message_handler(process_successful_payment, commands=['test'], state='*')
     dp.register_message_handler(show_final_menu, state=states.AfterPaymentState.waiting_for_phone)
