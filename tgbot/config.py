@@ -17,7 +17,6 @@ class DatabaseConfig:
 class Period:
     start: datetime.datetime
     end: datetime.datetime
-    price: int
 
 
 @dataclass
@@ -35,7 +34,6 @@ class Robokassa:
 class GoogleSheets:
     credentials_file: str
     spreadsheet_id: str
-
 
 
 @dataclass
@@ -68,25 +66,25 @@ def load_config(path: str = None):
         Rate(
             title='Встрепенуться',
             periods=[
-                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59), price=5_000),
-                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 23, 59), price=7_000),
-                Period(start=datetime.datetime(2022, 12, 13), end=datetime.datetime(2022, 12, 13, 23, 59), price=10_000)
+                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59)),
+                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 11, 59)),
+                Period(start=datetime.datetime(2022, 12, 13, 12), end=datetime.datetime(2022, 12, 13, 23, 59))
             ]
         ),
         Rate(
             title='Начать действовать',
             periods=[
-                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59), price=20_000),
-                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 23, 59), price=25_000),
-                Period(start=datetime.datetime(2022, 12, 12), end=datetime.datetime(2022, 12, 12), price=30_000)
+                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59)),
+                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 11, 59)),
+                Period(start=datetime.datetime(2022, 12, 13, 12), end=datetime.datetime(2022, 12, 13, 23, 59))
             ]
         ),
         Rate(
             title='Хуярить с Машей',
             periods=[
-                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59), price=70_000),
-                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 23, 59), price=80_000),
-                Period(start=datetime.datetime(2022, 12, 13), end=datetime.datetime(2022, 12, 13, 23, 59), price=100_000)
+                Period(start=datetime.datetime(2022, 12, 8, 14, 00), end=datetime.datetime(2022, 12, 10, 23, 59)),
+                Period(start=datetime.datetime(2022, 12, 12, 13, 00), end=datetime.datetime(2022, 12, 13, 11, 59)),
+                Period(start=datetime.datetime(2022, 12, 13), end=datetime.datetime(2022, 12, 13, 23, 59))
             ]
         )
     ]

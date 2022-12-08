@@ -28,9 +28,12 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
     index = int(callback_data['index'])
     rate: Rate = config.bot.rates[index]
 
-    for period in rate.periods:
+    with open('tgbot/static/messages.json', 'r') as file:
+        data = json.load(file)
+
+    for ind, period in enumerate(rate.periods):
         if period.start <= datetime.datetime.now() <= period.end:
-            price = period.price
+            price = data['rates'][index]['prices'][ind]
             price_str = f'{price} руб.'
             break
         else:
@@ -39,11 +42,8 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
                 price_str = f'Следующее окно продаж откроется {period.start.day} декабря в {period.start.hour}.{"00" if str(period.start.minute) == "0" else period.start.minute}'
                 break
     else:
-        price = 0
-        price_str = 'Продажи закрыты'
-
-    with open('tgbot/static/messages.json', 'r') as file:
-        data = json.load(file)
+        price = data['rates'][index]['final_price']
+        price_str = f'{price} руб. финальная'
 
     await call.message.edit_text(
         messages.rate.format(

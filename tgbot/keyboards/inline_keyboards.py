@@ -1,5 +1,4 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 from tgbot.misc import callbacks
 
@@ -20,6 +19,7 @@ about_fuckology.add(
 admin_main = InlineKeyboardMarkup(row_width=1)
 admin_main.add(
     InlineKeyboardButton('Поменять текст сообщения', callback_data='change_message'),
+    InlineKeyboardButton('Изменить цены', callback_data='to_rates_update'),
     InlineKeyboardButton('Закрыть', callback_data='close')
 )
 
@@ -33,15 +33,38 @@ admin_change_message.add(
     InlineKeyboardButton('Назад', callback_data='to_admin')
 )
 
+admin_rates = InlineKeyboardMarkup(row_width=1)
+admin_rates.add(
+    InlineKeyboardButton('Тариф «встрепенуться»', callback_data=callbacks.admin_rate_choose.new(index=0)),
+    InlineKeyboardButton('Тариф «начать действовать»', callback_data=callbacks.admin_rate_choose.new(index=1)),
+    InlineKeyboardButton('Тариф «хуярить с Машей»', callback_data=callbacks.admin_rate_choose.new(index=2)),
+    InlineKeyboardButton('Назад', callback_data='to_admin')
+)
+
 after_payment = InlineKeyboardMarkup()
 after_payment.add(
     InlineKeyboardButton('Перейти в чат', url='https://t.me/+H9DaC1Ap_cwwZGZi')
 )
 
-get_phone = ReplyKeyboardMarkup(resize_keyboard=True)
-get_phone.add(
-    KeyboardButton('Отправить номер', request_contact=True)
+
+cancel_price_input = InlineKeyboardMarkup()
+cancel_price_input.add(
+    InlineKeyboardButton('Отмена', callback_data='cancel')
 )
+
+
+def get_period_choose_keyboard(rate_index):
+    keyboard = InlineKeyboardMarkup(row_width=1)
+
+    keyboard.add(
+        InlineKeyboardButton('Первый', callback_data=callbacks.admin_period_choose.new(index=rate_index, period=0)),
+        InlineKeyboardButton('Второй', callback_data=callbacks.admin_period_choose.new(index=rate_index, period=1)),
+        InlineKeyboardButton('Третий', callback_data=callbacks.admin_period_choose.new(index=rate_index, period=2)),
+        InlineKeyboardButton('Финальная цена', callback_data=callbacks.admin_period_choose.new(index=rate_index, period='final')),
+        InlineKeyboardButton('Назад', callback_data='to_rates_update'),
+    )
+
+    return keyboard
 
 
 def get_rate_keyboard(rate_price, index):
