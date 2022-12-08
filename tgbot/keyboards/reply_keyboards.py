@@ -6,7 +6,12 @@ main_menu.add(
     KeyboardButton('Про Машу Милерюс')
 )
 
-cancel_button = ReplyKeyboardMarkup(resize_keyboard=True)
-cancel_button.add(
-    KeyboardButton('')
+get_phone = ReplyKeyboardMarkup(resize_keyboard=True)
+get_phone.add(
+    KeyboardButton('Отправить номер', request_contact=True)
+)
+
+cancel = ReplyKeyboardMarkup(resize_keyboard=True)
+cancel.add(
+    KeyboardButton('Отмена')
 )

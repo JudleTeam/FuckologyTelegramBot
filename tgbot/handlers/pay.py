@@ -4,6 +4,7 @@ from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, LabeledPrice, PreCheckoutQuery, ContentType, Message
 
+from tgbot.config import Rate
 from tgbot.misc import callbacks, messages, states
 from tgbot.keyboards import inline_keyboards, reply_keyboards
 
@@ -25,7 +26,7 @@ async def show_pay_menu(call: CallbackQuery, callback_data: dict):
     invoice_id = data['invoice_id']
     data['invoice_id'] = invoice_id + 1
     with open('tgbot/static/messages.json', 'w') as file:
-        json.dump(data, file)
+        json.dump(data, file, indent=4)
 
     data = {
         "InvoiceId": invoice_id,
@@ -70,8 +71,8 @@ async def get_pre_checkout_query(pre_checkout_query: PreCheckoutQuery):
 
 
 async def process_successful_payment(message: Message, state: FSMContext):
-    pmnt = message.successful_payment.to_python()
-    payload = pmnt['invoice_payload']
+    payment = message.successful_payment.to_python()
+    payload = payment['invoice_payload']
     if payload == 'one':
         index = 3
     elif payload == 'two':
@@ -82,13 +83,16 @@ async def process_successful_payment(message: Message, state: FSMContext):
     user = message.from_user
     await states.AfterPaymentState.waiting_for_phone.set()
     await state.update_data(index=index, username=user.username, full_name=user.full_name, mention=user.mention)
-    await message.answer('Пожалуйста, оставьте ваш номер телефона', reply_markup=inline_keyboards.get_cancel_button())
+    await message.answer('Пожалуйста, оставьте ваш номер телефона: ', reply_markup=reply_keyboards.cancel)
 
 
 async def show_final_menu(message: Message, state: FSMContext):
-    config = message.bot.get('config')
+    phone = message.text.replace('+', '').replace('-', '').replace(' ', '').replace('(', '').replace(')', '')
+    if not phone.isdigit() or not (10 <= len(phone) <= 12):
+        await message.answer('Неверный номер телефона, попробуйте ещё раз')
+        return
 
-    phone = message.contact.phone_number
+    config = message.bot.get('config')
     # get order id
     with open('tgbot/static/messages.json', 'r') as file:
         data = json.load(file)
@@ -99,18 +103,25 @@ async def show_final_menu(message: Message, state: FSMContext):
         username = data['username']
         full_name = data['full_name']
         mention = data['mention']
-    await state.finish()
+
+    with open('tgbot/static/messages.json', 'r') as file:
+        data = json.load(file)
+
     title = config.bot.rates[index-3].title
     title = f'Тариф {title}'
     # get price
-    rate = config.bot.rates[index-3]
-    for period in rate.periods:
+    rate: Rate = config.bot.rates[index-3]
+    for ind, period in enumerate(rate.periods):
         if period.start <= datetime.datetime.now() <= period.end:
-            price = period.price
+            price = data['rates'][index]['prices'][ind]
             break
+    else:
+        price = data['rates'][index]['final_price']
 
     await message.answer(messages.first, reply_markup=reply_keyboards.main_menu)
     await message.answer(messages.after_payment, reply_markup=inline_keyboards.after_payment)
+    await state.finish()
+
     google_sheets = message.bot.get('google_sheets')
     google_sheets.add_customer(title, mention, invoice_id, datetime.datetime.now(), price, phone, username, full_name)
 
@@ -119,4 +130,4 @@ def register_pay(dp: Dispatcher):
     dp.register_callback_query_handler(show_pay_menu, callbacks.rate_pay.filter())
     dp.register_pre_checkout_query_handler(get_pre_checkout_query, lambda query: True)
     dp.register_message_handler(process_successful_payment, content_types=ContentType.SUCCESSFUL_PAYMENT)
-    dp.register_message_handler(show_final_menu, state=states.AfterPaymentState.waiting_for_phone, content_types=ContentType.CONTACT)
+    dp.register_message_handler(show_final_menu, state=states.AfterPaymentState.waiting_for_phone)

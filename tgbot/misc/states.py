@@ -7,3 +7,7 @@ class MessageChangeState(StatesGroup):
 
 class AfterPaymentState(StatesGroup):
     waiting_for_phone = State()
+
+
+class PriceUpdateState(StatesGroup):
+    waiting_for_price = State()

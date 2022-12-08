@@ -48,8 +48,38 @@ data = {
     '3': rate1,
     '4': rate2,
     '5': rate3,
+    'rates': [
+        {
+            'description': rate1,
+            'prices': [
+                5_000,
+                7_000,
+                10_000
+            ],
+            'final_price': 10_000
+        },
+        {
+            'description': rate2,
+            'prices': [
+                20_000,
+                25_000,
+                30_000
+            ],
+            'final_price': 30_000
+        },
+        {
+            'description': rate3,
+            'prices': [
+                70_000,
+                80_000,
+                100_000
+            ],
+            'final_price': 100_000
+        }
+    ],
     'invoice_id': 1
 }
 
-with open('messages.json', 'w') as file:
-    json.dump(data, file)
+if __name__ == "__main__":
+    with open('messages.json', 'w') as file:
+        json.dump(data, file, indent=4)
