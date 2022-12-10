@@ -31,6 +31,7 @@ admin_change_message.add(
     InlineKeyboardButton('Тариф «встрепенуться»', callback_data=callbacks.change_message.new('show', 3)),
     InlineKeyboardButton('Тариф «начать действовать»', callback_data=callbacks.change_message.new('show', 4)),
     InlineKeyboardButton('Тариф «хуярить с Машей»', callback_data=callbacks.change_message.new('show', 5)),
+    InlineKeyboardButton('Продажи закрыты', callback_data=callbacks.change_message.new('show', 'sells_closed_text')),
     InlineKeyboardButton('Назад', callback_data='to_admin')
 )
 

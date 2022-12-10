@@ -8,6 +8,7 @@ from tgbot.config import Rate
 from tgbot.keyboards import inline_keyboards
 from tgbot.misc import messages, callbacks
 from tgbot.misc.json_helper import register_user, get_data
+from tgbot.misc.json_helper import get_data
 
 
 async def send_file(call: CallbackQuery):
@@ -21,7 +22,9 @@ async def show_main_menu(call: CallbackQuery):
 
 
 async def show_sell_closed(call: CallbackQuery):
-    await call.answer('Продажи закрыты!', show_alert=True)
+    data = get_data()
+    
+    await call.answer(data['sells_closed_text'], show_alert=True)
 
 
 async def show_rate(call: CallbackQuery, callback_data: dict):
@@ -30,13 +33,11 @@ async def show_rate(call: CallbackQuery, callback_data: dict):
     config = call.bot.get('config')
     index = int(callback_data['index'])
     rate: Rate = config.bot.rates[index]
-
-    with open('tgbot/static/messages.json', 'r') as file:
-        data = json.load(file)
+    data = get_data()
 
     if not data['open_sells']:
         price = 0
-        price_str = 'Продажи закрыты'
+        price_str = data['sells_closed_text']
     else:
         for ind, period in enumerate(rate.periods):
             if period.start <= datetime.datetime.now() + datetime.timedelta(hours=3) <= period.end:  # fix timezone

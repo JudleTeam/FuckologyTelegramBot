@@ -113,9 +113,8 @@ async def get_new_price(message: Message, state: FSMContext):
         return
 
     new_price = int(new_price)
-    with open(r'tgbot/static/messages.json', 'r') as file:
-        json_data = json.load(file)
-
+    json_data = get_data()
+    
     async with state.proxy() as data:
         if data['period'].isdigit():
             json_data['rates'][int(data['rate_index'])]['prices'][int(data['period'])] = new_price

@@ -79,7 +79,8 @@ data = {
     ],
     'invoice_id': 1,
     'reg_users': [],
-    'open_sells': True
+    'open_sells': True,
+    'sells_closed_text': 'Продажи закрыты!'
 }
 
 if __name__ == "__main__":
