@@ -101,8 +101,8 @@ async def show_final_menu(message: Message, state: FSMContext):
 
     config = message.bot.get('config')
     # get order id
-    data = get_data()
-    invoice_id = data['invoice_id']
+    json_data = get_data()
+    invoice_id = json_data['invoice_id']
 
     async with state.proxy() as data:
         index = data['index']
@@ -110,23 +110,23 @@ async def show_final_menu(message: Message, state: FSMContext):
         full_name = data['full_name']
         mention = data['mention']
 
-    title = config.bot.rates[index-3].title
+    title = config.bot.rates[index - 3].title
     title = f'Тариф {title}'
-    # get price
-    rate: Rate = config.bot.rates[index-3]
-    for ind, period in enumerate(rate.periods):
-        if period.start <= datetime.datetime.now() <= period.end:
-            price = data['rates'][index-3]['prices'][ind]
-            break
-    else:
-        price = data['rates'][index-3]['final_price']
-
     await message.answer(messages.first, reply_markup=reply_keyboards.main_menu)
     await message.answer(messages.after_payment, reply_markup=inline_keyboards.after_payment)
     await state.finish()
+    # get price
+    rate: Rate = config.bot.rates[index - 3]
+    for ind, period in enumerate(rate.periods):
+        if period.start <= datetime.datetime.now() <= period.end:
+            price = json_data['rates'][index - 3]['prices'][ind]
+            break
+    else:
+        price = json_data['rates'][index - 3]['final_price']
 
     google_sheets = message.bot.get('google_sheets')
-    google_sheets.add_customer(title, mention, invoice_id, datetime.datetime.now() + datetime.timedelta(hours=3), price, phone, username, full_name)
+    google_sheets.add_customer(title, mention, invoice_id, datetime.datetime.now() + datetime.timedelta(hours=3), price,
+                               phone, username, full_name)
 
 
 def register_pay(dp: Dispatcher):
