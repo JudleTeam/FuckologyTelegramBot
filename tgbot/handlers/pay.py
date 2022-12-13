@@ -76,6 +76,7 @@ async def get_pre_checkout_query(pre_checkout_query: PreCheckoutQuery):
 
 
 async def process_successful_payment(message: Message, state: FSMContext):
+    print(message.from_user.mention)
     payment = message.successful_payment.to_python()
     payload = payment['invoice_payload']
     if payload == 'one':
